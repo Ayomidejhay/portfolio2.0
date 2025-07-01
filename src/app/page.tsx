@@ -1,103 +1,104 @@
+'use client';
+
+import { useState, useRef } from "react"
+import { gsap } from "gsap"
+import { ScrollTrigger } from "gsap/ScrollTrigger"
+import { TextPlugin } from "gsap/TextPlugin"
+import { Sun, Moon } from "lucide-react"
+import About from "@/components/About";
+import Hero from "@/components/Hero";
 import Image from "next/image";
+import CustomCursor from "@/components/CustomCursor";
+import FloatingElements from "@/components/FloatingElements";
+import GlobalAnimation from "@/components/GlobalAnimation";
+import Experience from "@/components/Experience";
+import Skills from "@/components/Skills";
+import Projects from "@/components/Projects";
+import Achievements from "@/components/Achievements";
+import Testimonials from "@/components/Testimonials";
+import Contact from "@/components/Contact";
+
+gsap.registerPlugin(ScrollTrigger, TextPlugin)
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+  const [isDark, setIsDark] = useState(false)
+  const themeToggleRef = useRef<HTMLButtonElement>(null)
+
+  // Theme toggle function
+  const toggleTheme = () => {
+    const newTheme = !isDark
+    setIsDark(newTheme)
+
+    // Animate theme transition
+    gsap.to("body", {
+      duration: 0.5,
+      backgroundColor: newTheme ? "#0f172a" : "#ffffff",
+      color: newTheme ? "#e2e8f0" : "#1f2937",
+      ease: "power2.inOut",
+    })
+
+    // Animate all cards
+    gsap.to(".theme-card", {
+      duration: 0.5,
+      backgroundColor: newTheme ? "#1e293b" : "#ffffff",
+      borderColor: newTheme ? "#334155" : "#e5e7eb",
+      ease: "power2.inOut",
+    })
+
+    // Animate theme toggle button
+    gsap.to(themeToggleRef.current, {
+      duration: 0.3,
+      rotation: 360,
+      scale: 1.1,
+      ease: "back.out(1.7)",
+      onComplete: () => {
+        gsap.to(themeToggleRef.current, {
+          duration: 0.2,
+          scale: 1,
+          ease: "power2.out",
+        })
+      },
+    })
+  }
+  return (
+    <div
+      className={`min-h-screen transition-colors duration-500 ${isDark ? "bg-slate-900 text-slate-100" : "bg-white text-gray-900"}`}
+    >
+      {/* Scroll Progress Bar */}
+      <div className="fixed top-0 left-0 w-full h-1 bg-gray-200 dark:bg-gray-700 z-50">
+        <div className="scroll-progress h-1 bg-gradient-to-r from-blue-500 to-purple-500 origin-left scale-x-0"></div>
+      </div>
+
+      {/* Theme Toggle */}
+      <button
+        ref={themeToggleRef}
+        onClick={toggleTheme}
+        className={`fixed top-6 right-6 z-50 p-3 rounded-full transition-all duration-300 ${
+          isDark ? "bg-slate-800 text-yellow-400 hover:bg-slate-700" : "bg-white text-gray-600 hover:bg-gray-100"
+        } shadow-lg interactive`}
+      >
+        {isDark ? <Sun className="w-6 h-6" /> : <Moon className="w-6 h-6" />}
+      </button>
+
+      {/* Custom Cursor */}
+      <CustomCursor isDark={isDark} />
+
+      {/* Floating Elements */}
+      <FloatingElements isDark={isDark} />
+
+      {/* Global Animations */}
+      <GlobalAnimation isDark={isDark} />
+
+      {/* Sections */}
+      <Hero isDark={isDark} />
+      <About isDark={isDark} />
+      <Experience isDark={isDark} />
+      <Skills isDark={isDark} />
+      <Projects isDark={isDark} />
+      {/*<Achievements isDark={isDark} />*/}
+      <Testimonials isDark={isDark} />
+      <Contact isDark={isDark} />
     </div>
   );
 }
