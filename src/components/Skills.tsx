@@ -10,14 +10,14 @@ interface SkillsSectionProps {
 }
 
 const skills = [
-  { name: "React", level: 95 },
-  { name: "TypeScript", level: 90 },
-  { name: "Next.js", level: 88 },
-  { name: "GSAP", level: 85 },
-  { name: "Tailwind CSS", level: 92 },
-  { name: "Node.js", level: 80 },
-  { name: "JavaScript", level: 93 },
-  { name: "CSS/SCSS", level: 90 },
+  { name: "React", level:80 },
+  { name: "TypeScript", level: 80 },
+  { name: "Next.js", level: 80 },
+  { name: "GSAP", level: 75 },
+  { name: "Tailwind CSS", level: 82 },
+  { name: "Framer Motion", level: 80 },
+  { name: "JavaScript", level: 83 },
+  { name: "CSS/SCSS", level: 85 },
 ]
 
 export default function Skills({isDark}: SkillsSectionProps) {

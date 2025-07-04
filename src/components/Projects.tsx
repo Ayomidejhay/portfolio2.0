@@ -7,6 +7,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger"
 import { Github, ExternalLink } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
+import Link from 'next/link';
 
 interface ProjectsSectionProps {
   isDark: boolean
@@ -17,10 +18,11 @@ const projects = [
     title: "ZeroHunger App",
     description: "A food donation platform where donors can list surplus food and recipients can reserve pickups. Features real-time notifications, role-based authentication, and Supabase backend.",
     tech: ["Supabase", "Next.js", "ShadCN UI", "Tailwind", "TypeScript"],
-    image: "/placeholder.svg?height=200&width=300",
+    image: "/zerohunger.png?height=200&width=300",
     duration: "",
     team: "Solo Project",
     features: ["Role-based authentication", "Food listing creation and availability tracking", "Real-time notifications via Supabase Realtime", "Reservation system with expiration logic", "Pickup completion tracking and history"],
+    link: "https://zero-hunger-uzok.vercel.app/",
   },
     {
     title: "JobConnect",
@@ -30,6 +32,7 @@ const projects = [
     duration: "",
     team: "Solo Project",
     features: ["Authenticated user access and role handling", "Users can edit or delete their own job posts", "All users can browse and filter available jobs"],
+    link: "https://jobconnnect.netlify.app/",
   },
   {
     title: "Admin Dashboard",
@@ -39,6 +42,7 @@ const projects = [
     duration: "",
     team: "Solo Project",
     features: ["Analytics dashboard", "Dark Mode", "Responsive Design"],
+    link: "https://dashboardtestin.netlify.app/",
   },
   {
     title: "Degen Cyberlab",
@@ -48,6 +52,7 @@ const projects = [
     duration: "",
     team: "Solo Project",
     features: ["Fully responsive hero, services, and testimonial sections", "Animations with Framer Motion for engaging transitions", "Clean, modern branding using Tailwind and custom components"],
+    link: "https://cyberr-lab.netlify.app/",
   },
 
 ]
@@ -152,20 +157,17 @@ export default function Projects({isDark}: ProjectsSectionProps) {
                     <p className="text-gray-200 text-sm mb-3 leading-relaxed">{project.description}</p>
 
                     {/* Project details */}
-                    <div className="space-y-2 mb-4">
+                    {/*<div className="space-y-2 mb-4">
                       <div className="flex items-center gap-2 text-gray-300 text-xs">
                         <span className="w-2 h-2 bg-green-400 rounded-full"></span>
                         <span>Live Project</span>
                       </div>
-                      <div className="flex items-center gap-2 text-gray-300 text-xs">
-                        <span className="w-2 h-2 bg-blue-400 rounded-full"></span>
-                        <span>{project.duration || "3 months"}</span>
-                      </div>
+                     
                       <div className="flex items-center gap-2 text-gray-300 text-xs">
                         <span className="w-2 h-2 bg-purple-400 rounded-full"></span>
                         <span>{project.team || "Team of 4"}</span>
                       </div>
-                    </div>
+                    </div>*/}
 
                     {/* Tech stack */}
                     <div className="flex flex-wrap gap-1 mb-4">
@@ -181,20 +183,21 @@ export default function Projects({isDark}: ProjectsSectionProps) {
 
                     {/* Action buttons */}
                     <div className="flex gap-3">
-                      <Button
+                      {/*<Button
                         size="sm"
                         className="bg-white/20 backdrop-blur-sm text-white border border-white/30 hover:bg-white/30 transition-all duration-300"
                       >
                         <Github className="w-4 h-4 mr-1" />
                         Code
-                      </Button>
-                      <Button
-                        size="sm"
+                      </Button>*/}
+                      <a
+                        target="_blank"
+                        href={project.link}
                         className="bg-blue-500/80 backdrop-blur-sm text-white border border-blue-400/50 hover:bg-blue-600/80 transition-all duration-300"
                       >
                         <ExternalLink className="w-4 h-4 mr-1" />
-                        Live Demo
-                      </Button>
+                        
+                      </a>
                     </div>
                   </div>
                 </div>
@@ -219,6 +222,16 @@ export default function Projects({isDark}: ProjectsSectionProps) {
                       {tech}
                     </span>
                   ))}
+                </div>
+                <div className='mt-4'>
+                  <a
+                        target="_blank"
+                        href={project.link}
+                        className="bg-blue-500/80 rounded-[20px] px-2 py-1 backdrop-blur-sm text-white border border-blue-400/50 hover:bg-blue-600/80 transition-all duration-300"
+                      >
+                        
+                        Live link
+                      </a>
                 </div>
               </CardContent>
             </Card>

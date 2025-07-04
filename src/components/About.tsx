@@ -3,6 +3,7 @@
 import React, {useEffect, useRef} from 'react';
 import { gsap } from "gsap";
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import Image from 'next/image';
 
 interface AboutProps{
     isDark: boolean
@@ -60,9 +61,11 @@ export default function About({isDark}: AboutProps) {
             </p>
           </div>
           <div className="about-item">
-            <img
-              src="/placeholder.svg?height=400&width=400"
+            <Image
+              src="/coding.jpg"
               alt=""
+              width={500}
+              height={500}
               className="rounded-lg shadow-lg w-full max-w-sm mx-auto"
             />
           </div>
