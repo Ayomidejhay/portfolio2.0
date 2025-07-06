@@ -132,7 +132,7 @@ export default function Projects({isDark}: ProjectsSectionProps) {
     return () => ctx.revert()
   }, [isDark])
   return (
-    <section ref={projectsRef} className="py-20 px-6 relative">
+    <section ref={projectsRef} className="py-20 px-6 relative" id='project'>
       <div className="max-w-6xl mx-auto">
         <h2 className="section-title text-4xl md:text-5xl font-bold mb-12 text-center">Featured Projects</h2>
         <div className="grid md:grid-cols-2 lg:grid-cols-2 gap-8">

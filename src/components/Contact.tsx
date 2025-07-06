@@ -47,7 +47,7 @@ export default function Contact({ isDark }: ContactSectionProps) {
     return () => ctx.revert();
   }, []);
   return (
-    <section ref={contactRef} className="py-20 px-6 relative">
+    <section ref={contactRef} className="py-20 px-6 relative" id="contact">
       <div className="max-w-4xl mx-auto text-center">
         <h2 className="section-title text-4xl md:text-5xl font-bold mb-12">
           Let's Connect

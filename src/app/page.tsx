@@ -96,8 +96,8 @@ export default function Home() {
       <Experience isDark={isDark} />
       <Skills isDark={isDark} />
       <Projects isDark={isDark} />
-      {/*<Achievements isDark={isDark} />*/}
-      <Testimonials isDark={isDark} />
+      {/*<Achievements isDark={isDark} />
+      <Testimonials isDark={isDark} />*/}
       <Contact isDark={isDark} />
     </div>
   );
