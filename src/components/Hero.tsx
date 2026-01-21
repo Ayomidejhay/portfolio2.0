@@ -192,7 +192,7 @@ export default function Hero({ isDark }: HeroSectionProps) {
             <Link href="#contact">Get In Touch</Link>
           </Button>
 
-          <a href="/Olaniyan Ayomide cv.pdf" download="Olaniyan Ayomide cv.pdf">
+          <a href="/Olaniyan Ayomide resume.pdf" download="Olaniyan Ayomide resume.pdf">
             <Button
               variant="outline"
               size="lg"
