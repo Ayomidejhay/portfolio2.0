@@ -12,6 +12,13 @@ interface ExperienceSectionProps {
 }
 
 const experiences = [
+    {
+    title: "Frontend Developer (Contract)",
+    company: "Rehobot Business Solution Ltd",
+    period: "November 2025 - Present",
+    description:
+      "Worked as a contract frontend developer building responsive, conversion-focused web applications with Next.js and Tailwind CSS, including an internal admin dashboard with role-based access, while integrating APIs, optimizing performance, and translating business requirements into scalable frontend solutions.",
+  },
   {
     title: "Frontend Intern",
     company: "DotCircle Labs",
@@ -19,7 +26,14 @@ const experiences = [
     description:
       "Worked on real-world client projects using React and Firebase, optimized component structures, and contributed to responsive designs.",
   },
-  
+ 
+   {
+    title: "Freelance Frontend Developer",
+    company: "Self-Employed",
+    period: "July 2023 – Present",
+    description:
+      "Built responsive websites, dashboards, and landing pages for startups and small businesses using React, Next.js, and Tailwind CSS, while developing reusable components and design systems, integrating backend services, optimizing for performance and SEO, and collaborating with clients to deliver tailored solutions.",
+  },
 ]
 
 export default function Experience({isDark}: ExperienceSectionProps) {
