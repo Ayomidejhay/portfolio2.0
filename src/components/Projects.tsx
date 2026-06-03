@@ -22,7 +22,7 @@ const projects = [
     duration: "",
     team: "Solo Project",
     features: ["Role-based authentication", "Food listing creation and availability tracking", "Real-time notifications via Supabase Realtime", "Reservation system with expiration logic", "Pickup completion tracking and history"],
-    link: "https://zero-hunger-uzok.vercel.app/",
+    link: "https://zero-hungerr.netlify.app/",
   },
     {
     title: "JobConnect",
