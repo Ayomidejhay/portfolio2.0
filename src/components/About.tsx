@@ -14,7 +14,7 @@ interface AboutProps{
 const strengths = [
   {
     title: "Visual Integrity",
-    description: "Translating complex design mockups into pixel-perfect, interactive frontend states.",
+    description: "Translating complex designs into pixel-perfect, interactive frontend states.",
     icon: <Layers className="w-5 h-5 text-blue-500" />,
   },
   {
@@ -128,7 +128,7 @@ export default function About({isDark}: AboutProps) {
                   </p>
                 </div>
                 <div>
-                  <p className="text-3xl font-extrabold text-purple-500 tracking-tight">12+</p>
+                  <p className="text-3xl font-extrabold text-purple-500 tracking-tight">10+</p>
                   <p className={`text-xs font-semibold uppercase tracking-wider mt-1 ${isDark ? "text-slate-400" : "text-gray-500"}`}>
                     Projects Deployed
                   </p>
