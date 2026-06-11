@@ -34,7 +34,7 @@ const strengths = [
   },
 ]
 
-export default function About({isDark}: AboutProps) {
+export default function About({ isDark }: AboutProps) {
   const aboutRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -89,13 +89,12 @@ export default function About({isDark}: AboutProps) {
             {/* Strengths Grid */}
             <div className="grid md:grid-cols-2 gap-6 pt-4">
               {strengths.map((str, idx) => (
-                <div 
+                <div
                   key={idx}
-                  className={`about-item p-5 rounded-xl border transition-all duration-300 ${
-                    isDark 
-                      ? "bg-slate-800/40 border-slate-700/50 hover:bg-slate-800/80" 
-                      : "bg-slate-50 border-slate-200/80 hover:bg-slate-100/50"
-                  }`}
+                  className={`about-item p-5 rounded-xl border transition-all duration-300 ${isDark
+                    ? "bg-slate-800/40 border-slate-700/50 hover:bg-slate-800/80"
+                    : "bg-slate-50 border-slate-200/80 hover:bg-slate-100/50"
+                    }`}
                 >
                   <div className="flex items-center gap-3 mb-2">
                     <div className="p-2 rounded-lg bg-blue-500/10">
@@ -113,11 +112,10 @@ export default function About({isDark}: AboutProps) {
 
           {/* Right Column: Profile Stats Card */}
           <div className="lg:col-span-5 flex justify-center lg:justify-end w-full">
-            <div className={`about-item w-full max-w-sm rounded-2xl border p-8 backdrop-blur-xl shadow-xl flex flex-col justify-between glow-card ${
-              isDark 
-                ? "bg-slate-900/50 border-slate-800/60 shadow-blue-500/5" 
+            <div className={`about-item w-full max-w-sm rounded-2xl border p-8 backdrop-blur-xl shadow-xl flex flex-col justify-between glow-card ${isDark
+                ? "bg-slate-900/50 border-slate-800/60 shadow-blue-500/5"
                 : "bg-white border-slate-200/80 shadow-slate-200/50"
-            }`}>
+              }`}>
               <h3 className="text-xl font-bold mb-6 tracking-tight">Technical Profile</h3>
               
               <div className="space-y-6">
