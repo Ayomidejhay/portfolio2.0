@@ -317,7 +317,7 @@ export default function Contact({ isDark }: ContactSectionProps) {
 
         <div className="mt-24 pt-8 border-t border-slate-200/10 text-center">
           <p className={isDark ? "text-slate-500" : "text-gray-400"}>
-            © 2025 Ayomide Olaniyan. Crafted with passion and love.
+            © 2025 Ayomide Olaniyan. Crafted with love.
           </p>
         </div>
       </div>

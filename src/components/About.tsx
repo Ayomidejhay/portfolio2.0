@@ -1,20 +1,20 @@
 'use client'
 
-import React, {useEffect, useRef} from 'react';
+import React, { useEffect, useRef } from 'react';
 import { gsap } from "gsap";
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Image from 'next/image';
 
 import { Layers, Cpu, Flame, Accessibility } from 'lucide-react';
 
-interface AboutProps{
-    isDark: boolean
+interface AboutProps {
+  isDark: boolean
 }
 
 const strengths = [
   {
     title: "Visual Integrity",
-    description: "Translating complex designs into pixel-perfect, interactive frontend states.",
+    description: "Translating complex design into pixel-perfect, interactive frontend states.",
     icon: <Layers className="w-5 h-5 text-blue-500" />,
   },
   {
