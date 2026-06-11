@@ -1,20 +1,17 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
 export const metadata: Metadata = {
-  title: "Portfolio",
-  description: "",
+  title: "Ayomide Olaniyan | Frontend Developer & Creative Coder",
+  description: "Portfolio of Ayomide Olaniyan, a Frontend Developer specialized in React, Next.js, GSAP, and Tailwind CSS. Crafting interactive and high-performance web applications.",
+  keywords: ["Ayomide Olaniyan", "Frontend Developer", "Creative Coder", "React Developer", "Next.js", "GSAP Animations", "Tailwind CSS Portfolio"],
+  authors: [{ name: "Ayomide Olaniyan" }],
+  openGraph: {
+    title: "Ayomide Olaniyan | Frontend Developer & Creative Coder",
+    description: "Portfolio of Ayomide Olaniyan, a Frontend Developer specialized in React, Next.js, GSAP, and Tailwind CSS. Crafting interactive and high-performance web applications.",
+    type: "website",
+    url: "https://github.com/Ayomidejhay",
+  },
 };
 
 export default function RootLayout({
@@ -24,9 +21,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className="antialiased font-sans">
         {children}
       </body>
     </html>

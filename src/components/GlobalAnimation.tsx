@@ -11,14 +11,26 @@ interface GlobalAnimationsProps {
 }
 
 export default function GlobalAnimation({isDark}: GlobalAnimationsProps) {
-    useEffect(() => {
+  useEffect(() => {
+    const cleanupListeners: { element: EventTarget; type: string; handler: EventListener }[] = []
+
     const ctx = gsap.context(() => {
       // Enhanced section titles with character animation
       gsap.utils.toArray(".section-title").forEach((title: any) => {
-        const chars = title.textContent.split("")
-        title.innerHTML = chars
-          .map((char: string) => (char === " " ? "&nbsp;" : `<span class="char inline-block">${char}</span>`))
-          .join("")
+        if (!title.dataset.originalText) {
+          title.dataset.originalText = title.textContent || ""
+        }
+        const originalText = title.dataset.originalText
+        const words = originalText.split(" ")
+        title.innerHTML = words
+          .map((word: string) => {
+            const chars = word.split("")
+            const charsHtml = chars
+              .map((char: string) => `<span class="char inline-block">${char}</span>`)
+              .join("")
+            return `<span class="inline-block whitespace-nowrap">${charsHtml}</span>`
+          })
+          .join(" ")
 
         ScrollTrigger.create({
           trigger: title,
@@ -148,12 +160,21 @@ export default function GlobalAnimation({isDark}: GlobalAnimationsProps) {
         }
       }
 
-      document.addEventListener("click", (e) => {
-        createClickParticle(e.clientX, e.clientY)
-      })
+      const handleClick = (e: Event) => {
+        const mouseEvent = e as MouseEvent
+        createClickParticle(mouseEvent.clientX, mouseEvent.clientY)
+      }
+
+      document.addEventListener("click", handleClick)
+      cleanupListeners.push({ element: document, type: "click", handler: handleClick as EventListener })
     })
 
-    return () => ctx.revert()
+    return () => {
+      ctx.revert()
+      cleanupListeners.forEach(({ element, type, handler }) => {
+        element.removeEventListener(type, handler)
+      })
+    }
   }, [isDark])
   return null
 }

@@ -37,70 +37,109 @@ const experiences = [
 ]
 
 export default function Experience({isDark}: ExperienceSectionProps) {
-    const experienceRef = useRef<HTMLDivElement>(null)
+  const experienceRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      ScrollTrigger.create({
-        trigger: experienceRef.current,
-        start: "top 85%",
-        end: "bottom 15%",
-        onEnter: () => {
-          gsap.fromTo(
-            ".experience-item",
-            {
-              y: 80,
-              opacity: 0,
-              rotationX: 45,
-              scale: 0.9,
-            },
-            {
-              y: 0,
-              opacity: 1,
-              rotationX: 0,
-              scale: 1,
-              duration: 1.2,
-              stagger: 0.15,
-              ease: "power3.out",
-            },
-          )
-        },
+      // Alternate entry animations
+      gsap.utils.toArray(".timeline-node").forEach((node: any, idx) => {
+        const isLeft = idx % 2 === 0
+        gsap.fromTo(
+          node,
+          {
+            x: isLeft ? -100 : 100,
+            opacity: 0,
+            scale: 0.95,
+          },
+          {
+            x: 0,
+            opacity: 1,
+            scale: 1,
+            duration: 1.2,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: node,
+              start: "top 85%",
+              toggleActions: "play none none reverse",
+            }
+          }
+        )
       })
+
+      // Timeline vertical line height draw-in
+      gsap.fromTo(".timeline-line", 
+        { scaleY: 0 },
+        { 
+          scaleY: 1, 
+          transformOrigin: "top",
+          duration: 1.5, 
+          ease: "none",
+          scrollTrigger: {
+            trigger: experienceRef.current,
+            start: "top 70%",
+            end: "bottom 80%",
+            scrub: true,
+          }
+        }
+      )
     }, experienceRef)
 
     return () => ctx.revert()
   }, [])
+
   return (
-    <section ref={experienceRef} className="py-20 px-6 relative">
-      <div className="max-w-4xl mx-auto">
-        <h2 className="section-title text-4xl md:text-5xl font-bold mb-12 text-center">Experience</h2>
-        <div className="space-y-8">
-          {experiences.map((exp, index) => (
-            <Card
-              key={index}
-              className={`experience-item theme-card shadow-lg transition-all duration-300 ${
-                isDark ? "bg-slate-800 border-slate-700" : "bg-white/80 border-gray-200"
-              }`}
-            >
-              <CardContent className="p-8">
-                <div className="flex items-start gap-4">
-                  <div className="flex-shrink-0">
-                    <Briefcase className={`w-8 h-8 ${isDark ? "text-blue-400" : "text-blue-600"}`} />
+    <section ref={experienceRef} className="py-28 px-6 relative overflow-hidden" id="experience">
+      <div className="max-w-6xl mx-auto">
+        <h2 className="section-title text-4xl md:text-5xl font-bold mb-20 text-center">Experience</h2>
+        
+        <div className="relative">
+          {/* Vertical central timeline line */}
+          <div className="timeline-line absolute left-4 lg:left-1/2 top-0 bottom-0 w-[2px] bg-slate-200 dark:bg-slate-800 origin-top transform lg:-translate-x-1/2 rounded-full" />
+
+          <div className="space-y-12">
+            {experiences.map((exp, index) => {
+              const isLeft = index % 2 === 0
+              return (
+                <div 
+                  key={index} 
+                  className={`timeline-node flex flex-col lg:flex-row items-start lg:items-center relative w-full ${
+                    isLeft ? "lg:justify-start" : "lg:justify-end"
+                  }`}
+                >
+                  {/* Glowing timeline node checkpoint circle */}
+                  <div className="absolute left-4 lg:left-1/2 w-8 h-8 rounded-full border-4 border-white dark:border-slate-900 bg-blue-500 shadow-md shadow-blue-500/50 flex items-center justify-center -translate-x-1/2 z-10 transition-transform duration-300 hover:scale-125">
+                    <Briefcase className="w-3.5 h-3.5 text-white" />
                   </div>
-                  <div className="flex-grow">
-                    <h3 className="text-2xl font-bold mb-2">{exp.title}</h3>
-                    <p className={`text-lg font-medium mb-2 ${isDark ? "text-blue-400" : "text-blue-600"}`}>
-                      {exp.company}
-                    </p>
-                    <p className={`mb-4 ${isDark ? "text-slate-400" : "text-gray-500"}`}>{exp.period}</p>
-                    <p className={`leading-relaxed ${isDark ? "text-slate-300" : "text-gray-600"}`}>
-                      {exp.description}
-                    </p>
+
+                  {/* Card container */}
+                  <div className={`w-full lg:w-[45%] pl-12 lg:pl-0 ${isLeft ? "lg:pr-8" : "lg:pl-8"}`}>
+                    <Card
+                      className={`theme-card shadow-lg hover:shadow-xl transition-all duration-300 border glow-card ${
+                        isDark ? "bg-slate-800/80 border-slate-700/80" : "bg-white/95 border-gray-200/80"
+                      }`}
+                    >
+                      <CardContent className="p-8">
+                        <span className={`inline-block px-3 py-1 text-xs font-semibold rounded-full mb-4 ${
+                          isDark 
+                            ? "bg-slate-900 text-blue-400 border border-slate-800" 
+                            : "bg-blue-50 text-blue-700 border border-blue-100"
+                        }`}>
+                          {exp.period}
+                        </span>
+                        
+                        <h3 className="text-2xl font-bold tracking-tight mb-1">{exp.title}</h3>
+                        <p className="text-sm font-semibold text-blue-500 mb-4">{exp.company}</p>
+                        
+                        <p className={`text-sm leading-relaxed ${isDark ? "text-slate-350" : "text-gray-600"}`}>
+                          {exp.description}
+                        </p>
+                      </CardContent>
+                    </Card>
                   </div>
                 </div>
-              </CardContent>
-            </Card>
-          ))}
+              )
+            })}
+          </div>
         </div>
       </div>
     </section>

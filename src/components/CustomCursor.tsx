@@ -9,20 +9,24 @@ interface CustomCursorProps {
 }
 
 export default function CustomCursor({isDark}: CustomCursorProps) {
-     const cursorRef = useRef<HTMLDivElement>(null)
+  const cursorRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const cursor = cursorRef.current
     if (!cursor) return
 
+    let mouseX = 0
+    let mouseY = 0
+    let trailTimer: NodeJS.Timeout | null = null
+    const cleanupListeners: { element: EventTarget; type: string; handler: EventListener }[] = []
+
     const ctx = gsap.context(() => {
       gsap.set(cursor, { xPercent: -50, yPercent: -50 })
 
-      let mouseX = 0,
-        mouseY = 0
-      const moveCursor = (e: MouseEvent) => {
-        mouseX = e.clientX
-        mouseY = e.clientY
+      const moveCursor = (e: Event) => {
+        const mouseEvent = e as MouseEvent
+        mouseX = mouseEvent.clientX
+        mouseY = mouseEvent.clientY
         gsap.to(cursor, {
           duration: 0.15,
           x: mouseX,
@@ -32,6 +36,7 @@ export default function CustomCursor({isDark}: CustomCursorProps) {
       }
 
       window.addEventListener("mousemove", moveCursor)
+      cleanupListeners.push({ element: window, type: "mousemove", handler: moveCursor as EventListener })
 
       // Create cursor trail particles
       const createTrailParticle = () => {
@@ -60,37 +65,51 @@ export default function CustomCursor({isDark}: CustomCursorProps) {
       }
 
       // Create trail particles on mouse move
-      let trailTimer: NodeJS.Timeout
-      window.addEventListener("mousemove", () => {
-        clearTimeout(trailTimer)
+      const handleTrail = () => {
+        if (trailTimer) clearTimeout(trailTimer)
         trailTimer = setTimeout(createTrailParticle, 50)
-      })
+      }
+      window.addEventListener("mousemove", handleTrail)
+      cleanupListeners.push({ element: window, type: "mousemove", handler: handleTrail as EventListener })
 
       const hoverElements = document.querySelectorAll("button, a, .interactive")
       hoverElements.forEach((el) => {
-        el.addEventListener("mouseenter", () => {
+        const enterHandler = () => {
           gsap.to(cursor, {
             duration: 0.2,
             scale: 3,
             backgroundColor: isDark ? "#60a5fa" : "#3b82f6",
             boxShadow: `0 0 20px ${isDark ? "rgba(96, 165, 250, 0.5)" : "rgba(59, 130, 246, 0.5)"}`,
           })
-        })
-        el.addEventListener("mouseleave", () => {
+        }
+        const leaveHandler = () => {
           gsap.to(cursor, {
             duration: 0.2,
             scale: 1,
             backgroundColor: isDark ? "#ffffff" : "#000000",
             boxShadow: "none",
           })
-        })
+        }
+        el.addEventListener("mouseenter", enterHandler)
+        el.addEventListener("mouseleave", leaveHandler)
+        cleanupListeners.push(
+          { element: el, type: "mouseenter", handler: enterHandler as EventListener },
+          { element: el, type: "mouseleave", handler: leaveHandler as EventListener }
+        )
       })
     })
 
-    return () => ctx.revert()
+    return () => {
+      ctx.revert()
+      if (trailTimer) clearTimeout(trailTimer)
+      cleanupListeners.forEach(({ element, type, handler }) => {
+        element.removeEventListener(type, handler)
+      })
+    }
   }, [isDark])
+
   return (
-     <div
+    <div
       ref={cursorRef}
       className={`fixed w-4 h-4 rounded-full pointer-events-none z-50 mix-blend-difference hidden md:block ${
         isDark ? "bg-white" : "bg-black"

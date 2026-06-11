@@ -3,13 +3,18 @@
 import React from 'react'
 import { useEffect } from "react"
 import { gsap } from "gsap"
+import { MotionPathPlugin } from "gsap/MotionPathPlugin"
+
+gsap.registerPlugin(MotionPathPlugin)
 
 interface FloatingElementsProps {
   isDark: boolean
 }
 
 export default function FloatingElements({isDark}: FloatingElementsProps) {
-    useEffect(() => {
+  useEffect(() => {
+    const cleanupHandlers: { element: Element; type: string; handler: EventListener }[] = []
+
     const ctx = gsap.context(() => {
       // Complex floating elements with physics
       const floatingElements = [".floating-1", ".floating-2", ".floating-3", ".floating-4", ".floating-5"]
@@ -70,26 +75,33 @@ export default function FloatingElements({isDark}: FloatingElementsProps) {
       })
 
       // Add magnetic effect to floating elements
-      floatingElements.forEach((selector, index) => {
+      floatingElements.forEach((selector) => {
         const element = document.querySelector(selector)
         if (element) {
-          element.addEventListener("mouseenter", () => {
+          const enterHandler = () => {
             gsap.to(element, {
               scale: 2,
               rotation: 180,
               duration: 0.5,
               ease: "back.out(1.7)",
             })
-          })
+          }
 
-          element.addEventListener("mouseleave", () => {
+          const leaveHandler = () => {
             gsap.to(element, {
               scale: 1,
               rotation: 0,
               duration: 0.5,
               ease: "back.out(1.7)",
             })
-          })
+          }
+
+          element.addEventListener("mouseenter", enterHandler)
+          element.addEventListener("mouseleave", leaveHandler)
+          cleanupHandlers.push(
+            { element, type: "mouseenter", handler: enterHandler },
+            { element, type: "mouseleave", handler: leaveHandler }
+          )
         }
       })
 
@@ -206,7 +218,12 @@ export default function FloatingElements({isDark}: FloatingElementsProps) {
       }
     })
 
-    return () => ctx.revert()
+    return () => {
+      ctx.revert()
+      cleanupHandlers.forEach(({ element, type, handler }) => {
+        element.removeEventListener(type, handler)
+      })
+    }
   }, [isDark])
   return null
 }

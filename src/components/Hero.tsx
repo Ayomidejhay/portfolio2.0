@@ -14,12 +14,20 @@ export default function Hero({ isDark }: HeroSectionProps) {
   const heroRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    let typingTimer: NodeJS.Timeout | null = null;
+    let initialTimer: NodeJS.Timeout | null = null;
+
     const ctx = gsap.context(() => {
-      //hero animation with morphing elements
       const heroT1 = gsap.timeline();
 
-      //Animated background shapes
+      // Set initial states for clean entrance without flashes
       gsap.set(".hero-shape", { scale: 0, rotation: 45 });
+      gsap.set(".hero-left-content", { x: -50, opacity: 0 });
+      gsap.set(".hero-right-content", { x: 50, opacity: 0 });
+      gsap.set(".hero-name", { yPercent: 100 });
+      gsap.set(".hero-title", { yPercent: 100 });
+      gsap.set(".hero-description", { y: 20, opacity: 0 });
+      gsap.set(".hero-cta", { y: 15, opacity: 0 });
 
       heroT1
         .to(".hero-shape", {
@@ -29,96 +37,130 @@ export default function Hero({ isDark }: HeroSectionProps) {
           stagger: 0.2,
           ease: "elastic.out(1, 0.5)",
         })
-        .from(
-          ".hero-name",
+        .to(
+          ".hero-left-content",
           {
-            duration: 1.8,
-            y: 150,
-            opacity: 0,
-            rotationX: 90,
-            transformOrigin: "50% 50% -100px",
+            x: 0,
+            opacity: 1,
+            duration: 1.2,
             ease: "power4.out",
           },
-          "-=1.5"
+          "-=1.8"
         )
-        .from(
-          ".hero-title",
+        .to(
+          ".hero-right-content",
           {
-            duration: 1.5,
-            y: 80,
-            opacity: 0,
-            scale: 0.5,
-            rotation: 180,
-            ease: "elastic.out(1, 0.3)",
+            x: 0,
+            opacity: 1,
+            duration: 1.2,
+            ease: "power4.out",
+          },
+          "-=1.8"
+        )
+        .to(
+          ".hero-name",
+          {
+            duration: 1.2,
+            yPercent: 0,
+            ease: "power4.out",
           },
           "-=1.2"
         )
-        .from(
+        .to(
+          ".hero-title",
+          {
+            duration: 1.0,
+            yPercent: 0,
+            ease: "power4.out",
+          },
+          "-=1.0"
+        )
+        .to(
           ".hero-description",
           {
-            duration: 1.2,
-            y: 50,
-            opacity: 0,
-            clipPath: "polygon(0 0, 0 0, 0 100%, 0% 100%)",
+            duration: 1.0,
+            y: 0,
+            opacity: 1,
             ease: "power3.out",
           },
           "-=0.8"
         )
-        .from(
+        .to(
           ".hero-cta",
           {
-            duration: 1,
-            y: 60,
-            opacity: 0,
-           
-            stagger: 0.2,
+            duration: 0.8,
+            y: 0,
+            opacity: 1,
+            stagger: 0.1,
             ease: "power3.out",
           },
-          "-=0.4"
+          "-=0.6"
         );
-      // Enhanced typing animation
+      // Enhanced typing animation with role cycling
       const typingElement = document.querySelector(".typing-text");
       if (typingElement) {
-        const text = "Frontend Developer & Creative Coder";
-        let index = 0;
-
-        typingElement.textContent = "";
+        const roles = ["Frontend Developer", "Creative Coder", "UI/UX Enthusiast"];
+        let roleIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
 
         const typeWriter = () => {
-          if (index < text.length) {
-            typingElement.textContent += text.charAt(index);
-            index++;
-
-            if (Math.random() > 0.9) {
-              gsap.to(typingElement, {
-                duration: 0.1,
-                scaleX: 1.05,
-                skewX: 2,
-                color: isDark ? "#60a5fa" : "#3b82f6",
-                yoyo: true,
-                repeat: 1,
-                onComplete: () => {
-                  gsap.set(typingElement, {
-                    color: isDark ? "#e5e7eb" : "#6b7280",
-                  });
-                },
-              });
-            }
-
-            setTimeout(typeWriter, 100 + Math.random() * 100);
+          const currentRole = roles[roleIndex];
+          if (isDeleting) {
+            typingElement.textContent = currentRole.substring(0, charIndex - 1);
+            charIndex--;
+          } else {
+            typingElement.textContent = currentRole.substring(0, charIndex + 1);
+            charIndex++;
           }
+
+          if (!isDeleting && Math.random() > 0.95) {
+            gsap.to(typingElement, {
+              duration: 0.1,
+              scaleX: 1.05,
+              skewX: 2,
+              color: isDark ? "#60a5fa" : "#3b82f6",
+              yoyo: true,
+              repeat: 1,
+              onComplete: () => {
+                gsap.set(typingElement, {
+                  color: isDark ? "#e5e7eb" : "#6b7280",
+                  scaleX: 1,
+                  skewX: 0
+                });
+              },
+            });
+          }
+
+          let speed = isDeleting ? 40 : 80 + Math.random() * 40;
+
+          if (!isDeleting && charIndex === currentRole.length) {
+            speed = 2000; // Pause at full word
+            isDeleting = true;
+          } else if (isDeleting && charIndex === 0) {
+            isDeleting = false;
+            roleIndex = (roleIndex + 1) % roles.length;
+            speed = 400; // Pause before typing next word
+          }
+
+          typingTimer = setTimeout(typeWriter, speed);
         };
 
-        setTimeout(typeWriter, 1500);
+        initialTimer = setTimeout(typeWriter, 1500);
       }
     }, heroRef);
 
-    return () => ctx.revert();
+    return () => {
+      ctx.revert();
+      if (typingTimer) clearTimeout(typingTimer);
+      if (initialTimer) clearTimeout(initialTimer);
+    };
   }, [isDark]);
   return (
     <section
+      id="hero"
       ref={heroRef}
-      className="min-h-screen flex items-center justify-center px-6 relative overflow-hidden"
+      className="min-h-screen flex items-center justify-center px-6 relative overflow-hidden bg-radial-mesh pt-24"
     >
       {/* Animated background shapes */}
       <div
@@ -143,69 +185,115 @@ export default function Hero({ isDark }: HeroSectionProps) {
         }`}
       ></div>
 
-      <div className="text-center max-w-4xl relative z-10">
-        <h1
-          className={`hero-name text-6xl md:text-8xl font-bold mb-4 tracking-tight bg-gradient-to-r ${
-            isDark
-              ? "from-white via-blue-400 to-purple-400"
-              : "from-black via-blue-600 to-purple-600"
-          } bg-clip-text text-transparent`}
-        >
-          AYOMIDE OLANIYAN
-        </h1>
-        <h2
-          className={`hero-title text-2xl md:text-4xl font-light mb-6 ${
-            isDark ? "text-slate-300" : "text-gray-600"
-          }`}
-        >
-          <span className="typing-text">Frontend Developer </span>
-          <span className="animate-pulse ml-1">|</span>
-        </h2>
-        <p
-          className={`hero-description text-lg md:text-xl mb-8 max-w-2xl mx-auto leading-relaxed ${
-            isDark ? "text-slate-400" : "text-gray-500"
-          }`}
-        >
-          Crafting beautiful, interactive web experiences with modern
-          technologies and creative animations
-        </p>
-        <div className="hero-cta flex gap-4 justify-center flex-wrap">
-          <Button
-            size="lg"
-            className={`interactive ${
-              isDark
-                ? "bg-blue-600 hover:bg-blue-700 text-white"
-                : "bg-black hover:bg-gray-800 text-white"
+      <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-12 items-center relative z-10 w-full">
+        {/* Left Side: Typography */}
+        <div className="lg:text-left text-center flex flex-col justify-center">
+          <div className="overflow-hidden mb-4 py-1">
+            <h1
+              className={`hero-name text-5xl md:text-7xl font-extrabold tracking-tight bg-gradient-to-r leading-tight ${
+                isDark
+                  ? "from-white via-blue-400 to-purple-400"
+                  : "from-black via-blue-600 to-purple-600"
+              } bg-clip-text text-transparent`}
+            >
+              AYOMIDE OLANIYAN
+            </h1>
+          </div>
+          <div className="overflow-hidden mb-6 py-1">
+            <h2
+              className={`hero-title text-xl md:text-3xl font-light flex items-center justify-center lg:justify-start ${
+                isDark ? "text-slate-300" : "text-gray-600"
+              }`}
+            >
+              <span className="typing-text">Frontend Developer </span>
+              <span className="animate-pulse ml-1 text-blue-500">|</span>
+            </h2>
+          </div>
+          <p
+            className={`hero-description text-base md:text-lg mb-8 max-w-xl leading-relaxed ${
+              isDark ? "text-slate-400" : "text-gray-500"
             }`}
           >
-            <Link href="#project">View My Work</Link>
-          </Button>
-          <Button
-            variant="outline"
-            size="lg"
-            className={`interactive ${
-              isDark
-                ? "bg-transparent text-slate-300 border-slate-600 hover:bg-slate-800 hover:text-white"
-                : "bg-white text-black border-black hover:bg-black hover:text-white"
-            }`}
-          >
-            <Link href="#contact">Get In Touch</Link>
-          </Button>
-
-          <a href="/Olaniyan Ayomide resume.pdf" download="Olaniyan Ayomide resume.pdf">
+            Crafting high-performance, interactive, and visually stunning web experiences with modern technologies like React, Next.js, and custom GSAP animations.
+          </p>
+          <div className="hero-cta flex gap-4 justify-center lg:justify-start flex-wrap">
+            <Button
+              size="lg"
+              className={`interactive rounded-xl shadow-lg shadow-blue-500/10 ${
+                isDark
+                  ? "bg-blue-600 hover:bg-blue-700 text-white"
+                  : "bg-black hover:bg-gray-800 text-white"
+              }`}
+            >
+              <Link href="#project">View My Work</Link>
+            </Button>
             <Button
               variant="outline"
               size="lg"
-              className={`interactive ${
+              className={`interactive rounded-xl border transition-all duration-300 ${
                 isDark
-                  ? "bg-transparent text-slate-300 border-slate-600 hover:bg-slate-800 hover:text-white"
-                  : "bg-white text-black border-black hover:bg-black hover:text-white"
+                  ? "bg-transparent text-slate-300 border-slate-700 hover:bg-slate-800 hover:text-white"
+                  : "bg-white text-black border-slate-200 hover:bg-slate-100 hover:text-black hover:border-slate-300"
               }`}
             >
-              <Download className="w-5 h-5 mr-2" />
-              Download CV
+              <Link href="#contact">Get In Touch</Link>
             </Button>
-          </a>
+
+            <a href="/Olaniyan Ayomide resume.pdf" download="Olaniyan Ayomide resume.pdf">
+              <Button
+                variant="outline"
+                size="lg"
+                className={`interactive rounded-xl border transition-all duration-300 ${
+                  isDark
+                    ? "bg-transparent text-slate-300 border-slate-700 hover:bg-slate-800 hover:text-white"
+                    : "bg-white text-black border-slate-200 hover:bg-slate-100 hover:text-black hover:border-slate-300"
+                }`}
+              >
+                <Download className="w-4 h-4 mr-2" />
+                Download CV
+              </Button>
+            </a>
+          </div>
+        </div>
+
+        {/* Right Side: Interactive Developer Terminal */}
+        <div className="hero-right-content flex justify-center lg:justify-end opacity-0">
+          <div className={`w-full max-w-md rounded-2xl border backdrop-blur-xl shadow-2xl p-6 text-left font-mono text-xs md:text-sm leading-relaxed overflow-hidden glow-card ${
+            isDark 
+              ? "bg-slate-950/80 border-slate-800/80 shadow-blue-500/5 text-slate-300" 
+              : "bg-white/80 border-slate-200/80 shadow-slate-200/50 text-slate-700"
+          }`}>
+            <div className="flex gap-1.5 mb-5 border-b border-slate-200/20 dark:border-slate-800/60 pb-3">
+              <span className="w-3 h-3 rounded-full bg-red-500/80"></span>
+              <span className="w-3 h-3 rounded-full bg-yellow-500/80"></span>
+              <span className="w-3 h-3 rounded-full bg-green-500/80"></span>
+              <span className={`ml-2 text-xs ${isDark ? "text-slate-500" : "text-slate-400"}`}>ayomide.sh</span>
+            </div>
+            <div className="space-y-3.5">
+              <div>
+                <span className="text-purple-500">~</span> <span className="text-blue-500 font-semibold">neofetch</span>
+              </div>
+              <div className="grid grid-cols-[85px_1fr] gap-y-2.5">
+                <span className="text-blue-500 font-bold">OS:</span>
+                <span>Windows 11 x86_64</span>
+                <span className="text-blue-500 font-bold">Shell:</span>
+                <span>powershell</span>
+                <span className="text-blue-500 font-bold">Editor:</span>
+                <span>VS Code</span>
+                <span className="text-blue-500 font-bold">Stack:</span>
+                <span>React, Next.js, TypeScript</span>
+                <span className="text-blue-500 font-bold">Styling:</span>
+                <span>Tailwind CSS, Vanilla CSS</span>
+                <span className="text-blue-500 font-bold">Backend:</span>
+                <span>Supabase, Firebase, Appwrite</span>
+                <span className="text-blue-500 font-bold">Interests:</span>
+                <span>Saxophone 🎷, Football ⚽</span>
+              </div>
+              <div className={`pt-3 border-t border-slate-200/10 ${isDark ? "text-slate-500" : "text-slate-400"}`}>
+                {`// Continuous learning, clean interfaces`}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
