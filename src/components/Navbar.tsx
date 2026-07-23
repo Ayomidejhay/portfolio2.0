@@ -15,8 +15,6 @@ const navItems = [
   { label: "Experience", href: "#experience" },
   { label: "Skills", href: "#skills" },
   { label: "Projects", href: "#project" },
-  // { label: "Achievements", href: "#achievements" },
-  // { label: "Testimonials", href: "#testimonials" },
   { label: "Contact", href: "#contact" },
 ]
 
@@ -24,6 +22,9 @@ export default function Navbar({ isDark, toggleTheme }: NavbarProps) {
   const [isOpen, setIsOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const [activeSection, setActiveSection] = useState("hero")
+  const [hudOpen, setHudOpen] = useState(false)
+  const [uptime, setUptime] = useState(0)
+  const [scrollProgress, setScrollProgress] = useState(0)
 
   useEffect(() => {
     // Scroll detection for navbar height and background blur
@@ -49,7 +50,7 @@ export default function Navbar({ isDark, toggleTheme }: NavbarProps) {
     const observer = new IntersectionObserver(observerCallback, observerOptions)
     
     // Elements to track
-    const targets = ["hero", "about", "experience", "skills", "project", "achievements", "testimonials", "contact"]
+    const targets = ["hero", "about", "experience", "skills", "project", "contact"]
     targets.forEach((id) => {
       const el = document.getElementById(id)
       if (el) observer.observe(el)
@@ -61,9 +62,26 @@ export default function Navbar({ isDark, toggleTheme }: NavbarProps) {
       { y: 0, opacity: 1, duration: 1.2, ease: "power4.out" }
     )
 
+    // Uptime count ticks
+    const uptimeTimer = setInterval(() => {
+      setUptime((prev) => prev + 1)
+    }, 1000)
+
+    // Scroll depth tracker
+    const handleScrollDepth = () => {
+      const totalHeight = document.documentElement.scrollHeight - window.innerHeight
+      if (totalHeight > 0) {
+        setScrollProgress(Math.round((window.scrollY / totalHeight) * 100))
+      }
+    }
+
     window.addEventListener("scroll", handleScroll)
+    window.addEventListener("scroll", handleScrollDepth)
+
     return () => {
       window.removeEventListener("scroll", handleScroll)
+      window.removeEventListener("scroll", handleScrollDepth)
+      clearInterval(uptimeTimer)
       observer.disconnect()
     }
   }, [])
@@ -128,6 +146,22 @@ export default function Navbar({ isDark, toggleTheme }: NavbarProps) {
             )
           })}
 
+          {/* HUD Toggle */}
+          <button
+            onClick={() => setHudOpen(!hudOpen)}
+            className={`font-mono text-[9.5px] font-bold border rounded-lg px-2.5 py-1.5 flex items-center gap-1.5 transition-all duration-300 relative select-none cursor-pointer interactive ${
+              hudOpen
+                ? "bg-blue-600/10 border-blue-500 text-blue-500"
+                : isDark
+                  ? "bg-slate-900/60 border-slate-800 text-slate-400 hover:border-slate-700"
+                  : "bg-slate-50 border-slate-200 text-slate-600 hover:bg-slate-100"
+            }`}
+            aria-label="Toggle Systems HUD"
+          >
+            <span className={`w-1.5 h-1.5 rounded-full bg-emerald-500 ${hudOpen ? "animate-ping" : "animate-pulse"}`}></span>
+            SYS_HUD
+          </button>
+
           {/* Theme Toggle */}
           <button
             onClick={toggleTheme}
@@ -144,6 +178,22 @@ export default function Navbar({ isDark, toggleTheme }: NavbarProps) {
 
         {/* Mobile Menu Action Trigger */}
         <div className="flex items-center gap-3 lg:hidden">
+          {/* Mobile HUD Button */}
+          <button
+            onClick={() => setHudOpen(!hudOpen)}
+            className={`font-mono text-[9.5px] font-bold border rounded-lg px-2.5 py-1.5 flex items-center gap-1.5 transition-all duration-300 select-none cursor-pointer interactive ${
+              hudOpen
+                ? "bg-blue-600/10 border-blue-500 text-blue-500"
+                : isDark
+                  ? "bg-slate-900/60 border-slate-800 text-slate-400"
+                  : "bg-slate-50 border-slate-200 text-slate-600"
+            }`}
+            aria-label="Toggle Systems HUD"
+          >
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+            HUD
+          </button>
+
           <button
             onClick={toggleTheme}
             className={`p-2 rounded-full border transition-all duration-300 ${
@@ -196,6 +246,37 @@ export default function Navbar({ isDark, toggleTheme }: NavbarProps) {
           })}
         </div>
       </div>
+
+      {/* HUD Telemetry Drawer Dropdown */}
+      {hudOpen && (
+        <div className="px-6 pb-4 w-full mt-4 animate-fade-in select-none">
+          <div className={`border rounded-xl p-5 font-mono text-[10px] md:text-xs text-left grid grid-cols-2 md:grid-cols-4 gap-4 backdrop-blur-xl ${
+            isDark
+              ? "bg-slate-950/90 border-slate-800/80 text-slate-300"
+              : "bg-white/90 border-slate-200/80 text-slate-700"
+          }`}>
+            <div className="flex flex-col gap-1">
+              <span className="opacity-45 text-[8.5px] uppercase tracking-wider">// TELEMETRY_DEPTH</span>
+              <span className="font-bold text-blue-500 dark:text-blue-400">{scrollProgress}% SCROLLED</span>
+            </div>
+            <div className="flex flex-col gap-1">
+              <span className="opacity-45 text-[8.5px] uppercase tracking-wider">// SESSION_UPTIME</span>
+              <span className="font-bold">{uptime}s ACTIVE</span>
+            </div>
+            <div className="flex flex-col gap-1">
+              <span className="opacity-45 text-[8.5px] uppercase tracking-wider">// THEME_STATE</span>
+              <span className="font-bold uppercase">{isDark ? "DARK_MODE" : "LIGHT_MODE"}</span>
+            </div>
+            <div className="flex flex-col gap-1">
+              <span className="opacity-45 text-[8.5px] uppercase tracking-wider">// SYS_LOAD_SIM</span>
+              <span className="font-bold text-emerald-500 flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                STABLE (1.04ms)
+              </span>
+            </div>
+          </div>
+        </div>
+      )}
     </nav>
   )
 }

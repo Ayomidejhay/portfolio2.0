@@ -15,52 +15,39 @@ export default function GlobalAnimation({isDark}: GlobalAnimationsProps) {
     const cleanupListeners: { element: EventTarget; type: string; handler: EventListener }[] = []
 
     const ctx = gsap.context(() => {
-      // Enhanced section titles with character animation
+      // Section titles subtle fade & slide-up mask reveal animation
       gsap.utils.toArray(".section-title").forEach((title: any) => {
         if (!title.dataset.originalText) {
-          title.dataset.originalText = title.textContent || ""
+          title.dataset.originalText = title.textContent || "";
         }
-        const originalText = title.dataset.originalText
-        const words = originalText.split(" ")
-        title.innerHTML = words
+        const text = title.dataset.originalText;
+
+        // Wrap each word in a wrapper with overflow-hidden mask, and each character in a span
+        title.innerHTML = text
+          .split(" ")
           .map((word: string) => {
             const chars = word.split("")
-            const charsHtml = chars
-              .map((char: string) => `<span class="char inline-block">${char}</span>`)
-              .join("")
-            return `<span class="inline-block whitespace-nowrap">${charsHtml}</span>`
+              .map((c: string) => `<span class="char-subtle inline-block translate-y-4 opacity-0">${c}</span>`)
+              .join("");
+            return `<span class="inline-block overflow-hidden pb-1 select-none">${chars}</span>`;
           })
-          .join(" ")
+          .join(" ");
 
         ScrollTrigger.create({
           trigger: title,
-          start: "top 85%",
+          start: "top 88%",
           toggleActions: "play none none reverse",
           onEnter: () => {
-            gsap.fromTo(
-              title.querySelectorAll(".char"),
-              {
-                y: 100,
-                opacity: 0,
-                rotation: 180,
-                scale: 0,
-              },
-              {
-                y: 0,
-                opacity: 1,
-                rotation: 0,
-                scale: 1,
-                duration: 0.8,
-                stagger: {
-                  amount: 0.6,
-                  from: "center",
-                },
-                ease: "back.out(1.7)",
-              },
-            )
+            gsap.to(title.querySelectorAll(".char-subtle"), {
+              y: 0,
+              opacity: 1,
+              duration: 0.5,
+              stagger: 0.02,
+              ease: "power2.out",
+            });
           },
-        })
-      })
+        });
+      });
 
       // Enhanced scroll progress with morphing
       gsap.to(".scroll-progress", {

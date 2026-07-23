@@ -5,7 +5,6 @@ import { useEffect, useRef } from "react"
 import { gsap } from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import { Github, ExternalLink } from "lucide-react"
-import { Card, CardContent } from "@/components/ui/card"
 
 interface ProjectsSectionProps {
   isDark: boolean
@@ -14,49 +13,100 @@ interface ProjectsSectionProps {
 const projects = [
   {
     title: "ZeroHunger App",
+    role: "Creator & Fullstack Developer",
+    status: "LIVE",
+    category: "FOOD DONATION PLATFORM",
     description: "A food donation platform where donors can list surplus food and recipients can reserve pickups. Features real-time notifications, role-based authentication, and Supabase backend.",
     tech: ["Supabase", "Next.js", "ShadCN UI", "Tailwind", "TypeScript"],
-    image: "/zerohunger.png?height=200&width=300",
-    duration: "",
     team: "Solo Project",
     features: ["Role-based authentication", "Food listing creation and availability tracking", "Real-time notifications via Supabase Realtime", "Reservation system with expiration logic", "Pickup completion tracking and history"],
     link: "https://zero-hungerr.netlify.app/",
     github: "https://github.com/Ayomidejhay/zerohunger",
+    image: "/zerohunger.png",
   },
   {
     title: "JobConnect",
+    role: "Creator & Frontend Developer",
+    status: "LIVE",
+    category: "JOB SEARCH INTERFACE",
     description: "A job-sharing platform where registered users can post job opportunities visible to all other users.",
     tech: ["Next.js", "Appwrite", "TypeScript", "Tailwind"],
-    image: "/jobconnect.png?height=200&width=300",
-    duration: "",
     team: "Solo Project",
     features: ["Authenticated user access and role handling", "Users can edit or delete their own job posts", "All users can browse and filter available jobs"],
     link: "https://jobconnnect.netlify.app/",
     github: "https://github.com/Ayomidejhay/jobconnect",
+    image: "/jobconnect.png",
   },
   {
     title: "Admin Dashboard",
+    role: "Frontend Developer",
+    status: "PROTOTYPE",
+    category: "TELEMTRY SYSTEM TELEPORT",
     description: "An intuitive admin interface for managing platform users, listings, and overall system health.",
     tech: ["Chart.js", "Next.js", "Framer Motion", "CSS", "TypeScript"],
-    image: "/dashboard.png?height=200&width=300",
-    duration: "",
     team: "Solo Project",
     features: ["Analytics dashboard", "Dark Mode", "Responsive Design"],
     link: "https://dashboardtestin.netlify.app/",
     github: "https://github.com/Ayomidejhay/dashboard-demo",
+    image: "/dashboard.png",
   },
   {
     title: "Degen Cyberlab",
+    role: "Creative Coder",
+    status: "LIVE",
+    category: "CONVERSION LANDING PAGE",
     description: "A modern, conversion-optimized landing page for a fictional software lab/startup.",
     tech: ["Next.js", "Framer Motion", "Tailwind", "TypeScript"],
-    image: "/degen.png?height=200&width=300",
-    duration: "",
     team: "Solo Project",
     features: ["Fully responsive hero, services, and testimonial sections", "Animations with Framer Motion for engaging transitions", "Clean, modern branding using Tailwind and custom components"],
     link: "https://cyberr-lab.netlify.app/",
     github: "https://github.com/Ayomidejhay/cyberr-lab",
+    image: "/degen.png",
   },
 ]
+
+const projectThemes = [
+  {
+    bgLight: "bg-emerald-50/95 border-emerald-200/90 text-emerald-950 shadow-emerald-200/20",
+    bgDark: "bg-[#062c1d]/90 border-emerald-900/60 text-emerald-100 shadow-emerald-950/40",
+    accent: "text-emerald-500 dark:text-emerald-400",
+    tabLight: "bg-emerald-50/95 border-emerald-200/90 border-b-transparent text-emerald-900",
+    tabDark: "bg-[#062c1d]/90 border-emerald-900/60 border-b-transparent text-emerald-100",
+    bullet: "text-emerald-500 dark:text-emerald-400",
+    chipBgLight: "bg-emerald-100/50 border-emerald-200/60 text-emerald-800",
+    chipBgDark: "bg-emerald-900/30 border-emerald-800/40 text-emerald-300"
+  },
+  {
+    bgLight: "bg-violet-50/95 border-violet-200/90 text-violet-950 shadow-violet-200/20",
+    bgDark: "bg-[#180a2b]/90 border-purple-900/60 text-purple-100 shadow-purple-950/40",
+    accent: "text-purple-500 dark:text-purple-400",
+    tabLight: "bg-violet-50/95 border-violet-200/90 border-b-transparent text-violet-900",
+    tabDark: "bg-[#180a2b]/90 border-purple-900/60 border-b-transparent text-purple-100",
+    bullet: "text-purple-500 dark:text-purple-400",
+    chipBgLight: "bg-violet-100/50 border-violet-200/60 text-violet-800",
+    chipBgDark: "bg-purple-900/30 border-purple-800/40 text-purple-300"
+  },
+  {
+    bgLight: "bg-blue-50/95 border-blue-200/90 text-blue-950 shadow-blue-200/20",
+    bgDark: "bg-[#051c2c]/90 border-blue-900/60 text-blue-100 shadow-blue-950/40",
+    accent: "text-blue-500 dark:text-blue-400",
+    tabLight: "bg-blue-50/95 border-blue-200/90 border-b-transparent text-blue-900",
+    tabDark: "bg-[#051c2c]/90 border-blue-900/60 border-b-transparent text-blue-100",
+    bullet: "text-blue-500 dark:text-blue-400",
+    chipBgLight: "bg-blue-100/50 border-blue-200/60 text-blue-800",
+    chipBgDark: "bg-blue-900/30 border-blue-800/40 text-blue-300"
+  },
+  {
+    bgLight: "bg-rose-50/95 border-rose-200/90 text-rose-950 shadow-rose-200/20",
+    bgDark: "bg-[#2d0813]/90 border-rose-900/60 text-rose-100 shadow-rose-950/40",
+    accent: "text-rose-500 dark:text-rose-400",
+    tabLight: "bg-rose-50/95 border-rose-200/90 border-b-transparent text-rose-900",
+    tabDark: "bg-[#2d0813]/90 border-rose-900/60 border-b-transparent text-rose-100",
+    bullet: "text-rose-500 dark:text-rose-400",
+    chipBgLight: "bg-rose-100/50 border-rose-200/60 text-rose-800",
+    chipBgDark: "bg-rose-900/30 border-rose-800/40 text-rose-300"
+  }
+];
 
 export default function Projects({isDark}: ProjectsSectionProps) {
   const projectsRef = useRef<HTMLDivElement>(null)
@@ -69,21 +119,17 @@ export default function Projects({isDark}: ProjectsSectionProps) {
         end: "bottom 15%",
         onEnter: () => {
           gsap.fromTo(
-            ".project-card",
+            ".project-card-wrapper",
             {
-              y: 80,
+              y: 50,
               opacity: 0,
-              rotationX: 45,
-              scale: 0.9,
             },
             {
               y: 0,
               opacity: 1,
-              rotationX: 0,
-              scale: 1,
-              duration: 1.2,
+              duration: 0.8,
               stagger: 0.15,
-              ease: "power3.out",
+              ease: "power2.out",
             },
           )
         },
@@ -93,158 +139,147 @@ export default function Projects({isDark}: ProjectsSectionProps) {
     return () => ctx.revert()
   }, [])
 
-  const handleMouseEnter = (e: React.MouseEvent<HTMLDivElement>) => {
-    gsap.to(e.currentTarget, {
-      y: -15,
-      scale: 1.03,
-      rotationY: 8,
-      rotationX: 4,
-      z: 50,
-      boxShadow: isDark 
-        ? "0 25px 50px -12px rgba(96, 165, 250, 0.25)" 
-        : "0 25px 50px -12px rgba(59, 130, 246, 0.2)",
-      duration: 0.4,
-      ease: "power2.out",
-    })
-  }
-
-  const handleMouseLeave = (e: React.MouseEvent<HTMLDivElement>) => {
-    gsap.to(e.currentTarget, {
-      y: 0,
-      scale: 1,
-      rotationY: 0,
-      rotationX: 0,
-      z: 0,
-      boxShadow: isDark 
-        ? "0 10px 25px -5px rgba(0, 0, 0, 0.4)" 
-        : "0 10px 25px -5px rgba(0, 0, 0, 0.1)",
-      duration: 0.4,
-      ease: "power2.out",
-    })
-  }
-
   return (
     <section ref={projectsRef} className="py-28 px-6 relative" id="project">
-      <div className="max-w-6xl mx-auto">
-        <h2 className="section-title text-4xl md:text-5xl font-bold mb-16 text-center">Featured Projects</h2>
-        <div className="grid md:grid-cols-2 gap-10">
-          {projects.map((project) => (
-            <Card
-              key={project.title}
-              onMouseEnter={handleMouseEnter}
-              onMouseLeave={handleMouseLeave}
-              className={`project-card theme-card group overflow-hidden shadow-xl border transition-all duration-500 transform-gpu glow-card ${
-                isDark ? "bg-slate-800/80 border-slate-700/80" : "bg-white/95 border-gray-200/80"
-              }`}
-            >
-              <div className="relative overflow-hidden aspect-video">
-                <img
-                  src={project.image || "/placeholder.svg"}
-                  alt={project.title}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 group-hover:rotate-1"
-                />
+      <div className="max-w-6xl mx-auto flex flex-col items-center">
+        <h2 className="section-title text-4xl md:text-5xl font-bold mb-20 text-center">Featured Projects</h2>
+        
+        {/* Sticky stacked block layout */}
+        <div className="flex flex-col gap-28 md:gap-36 w-full relative">
+          {projects.map((project, index) => {
+            const theme = projectThemes[index % projectThemes.length];
+            return (
+              <div
+                key={project.title}
+                className="project-card-wrapper sticky top-28 md:top-36 w-full"
+                style={{
+                  zIndex: index + 1,
+                  // Setup clean horizontal offsets for folder tabs using a css var to prevent Next.js hydration mismatch
+                  ['--tab-offset' as any]: `${index * 240}px`,
+                }}
+              >
+                <div className="relative group">
+                  
+                  {/* Folder Tab */}
+                  <span
+                    className={`folder-tab absolute bottom-full left-0 md:left-[var(--tab-offset)] translate-y-[1px] h-11 px-6 flex items-center gap-2.5 font-mono text-[10.5px] tracking-[0.15em] font-semibold border-t border-x rounded-t-lg select-none w-full md:w-56 justify-center md:justify-start ${
+                      isDark ? theme.tabDark : theme.tabLight
+                    }`}
+                  >
+                    <svg
+                      width="12"
+                      height="12"
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                      className="opacity-70"
+                      aria-hidden="true"
+                    >
+                      <path d="M4 20v-6h5v-5h5V4h6v16z"></path>
+                    </svg>
+                    PROJECT 0{index + 1}
+                  </span>
 
-                {/* Enhanced hover overlay with detailed info */}
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/95 via-slate-900/80 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 flex flex-col justify-end p-6">
-                  <div className="transform translate-y-6 group-hover:translate-y-0 transition-transform duration-500">
-                    <h4 className="text-white font-bold text-xl mb-2">{project.title}</h4>
+                  {/* Card Panel body */}
+                  <article
+                    className={`project-card grid gap-8 md:grid-cols-[1fr_1.1fr] md:gap-12 p-6 md:p-10 rounded-b-xl rounded-r-xl border shadow-xl transition-all duration-300 ${
+                      isDark ? theme.bgDark : theme.bgLight
+                    }`}
+                  >
+                    {/* Left Column: Info details */}
+                    <div className="flex flex-col">
+                      <p className="flex items-center gap-2 font-mono text-[10px] font-semibold tracking-[0.16em] opacity-70">
+                        <span aria-hidden="true" className={`h-2 w-2 rounded-full ${isDark ? "bg-white" : "bg-black"}`}></span>
+                        {project.category}
+                      </p>
 
-                    {/* Tech stack tags inside overlay */}
-                    <div className="flex flex-wrap gap-1.5 mb-5">
-                      {project.tech.map((tech) => (
-                        <span
-                          key={tech}
-                          className="px-2 py-0.5 bg-white/10 backdrop-blur-sm text-white text-[11px] rounded-full border border-white/20"
+                      <h3 className="mt-4 text-3xl md:text-4xl font-extrabold tracking-tight font-sans">
+                        {project.title}
+                      </h3>
+
+                      <p className="font-mono text-[10px] text-blue-500 dark:text-blue-400 font-semibold uppercase tracking-wider mt-1.5 mb-4">
+                        {project.role}
+                      </p>
+
+                      <p className="text-sm leading-relaxed mb-5 opacity-80 font-sans">
+                        {project.description}
+                      </p>
+
+                      {/* Feature highlights */}
+                      {project.features && project.features.length > 0 && (
+                        <ul className="flex flex-col gap-2 mb-6">
+                          {project.features.slice(0, 3).map((feat, i) => (
+                            <li key={i} className="relative pl-5 text-xs opacity-90 leading-relaxed font-sans">
+                              <span className={`absolute left-0 font-mono font-bold select-none ${theme.bullet}`}>&gt;</span>
+                              {feat}
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+
+                      {/* Tech stack tags */}
+                      <div className="flex flex-wrap gap-1.5 mt-auto pt-4 border-t border-slate-200/10 dark:border-slate-800/40">
+                        {project.tech.map((t) => (
+                          <em
+                            key={t}
+                            className={`not-italic font-mono text-[9px] px-2 py-0.5 rounded border transition-colors ${
+                              isDark ? theme.chipBgDark : theme.chipBgLight
+                            }`}
+                          >
+                            {t}
+                          </em>
+                        ))}
+                      </div>
+
+                      {/* Action buttons */}
+                      <div className="flex flex-wrap gap-3 pt-4">
+                        <a
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          href={project.github}
+                          className={`font-mono text-[10px] font-semibold border rounded-lg px-4 py-2 flex items-center gap-1.5 transition-all duration-200 ${
+                            isDark
+                              ? "border-slate-800 bg-slate-900/20 hover:border-blue-500/60 hover:text-blue-400 text-slate-300"
+                              : "border-slate-200 bg-white/40 hover:border-blue-600/60 hover:text-blue-600 text-slate-700"
+                          }`}
                         >
-                          {tech}
-                        </span>
-                      ))}
+                          <Github className="w-3.5 h-3.5" />
+                          CODE ↗
+                        </a>
+                        <a
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          href={project.link}
+                          className="font-mono text-[10px] font-semibold bg-blue-600 hover:bg-blue-500 text-white rounded-lg px-4 py-2 flex items-center gap-1.5 transition-all duration-200 shadow-md hover:shadow-lg hover:shadow-blue-500/25"
+                        >
+                          <ExternalLink className="w-3.5 h-3.5" />
+                          DEMO ↗
+                        </a>
+                      </div>
                     </div>
 
-                    {/* Action buttons inside overlay */}
-                    <div className="flex gap-3">
-                      <a
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        href={project.github}
-                        className="flex items-center gap-1.5 px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white text-xs font-semibold rounded-lg border border-slate-700 hover:border-slate-600 transition-all duration-300 hover:shadow-lg shadow-slate-950/30"
-                      >
-                        <Github className="w-4 h-4" />
-                        Code
-                      </a>
-                      <a
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        href={project.link}
-                        className="flex items-center gap-1.5 px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold rounded-lg border border-blue-500 hover:border-blue-400 transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/25"
-                      >
-                        <span className="relative flex h-2 w-2">
-                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
-                          <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-200"></span>
-                        </span>
-                        <ExternalLink className="w-4 h-4" />
-                        Demo
-                      </a>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Animated corner accent */}
-                <div className="absolute top-0 right-0 w-0 h-0 border-l-[40px] border-l-transparent border-t-[40px] border-t-blue-500 opacity-0 group-hover:opacity-100 transition-all duration-300"></div>
-              </div>
-
-              <CardContent className="p-6 flex flex-col justify-between flex-grow">
-                <div>
-                  <h3 className="text-2xl font-bold mb-3 tracking-tight group-hover:text-blue-500 transition-colors duration-300">{project.title}</h3>
-                  <p className={`mb-5 text-sm leading-relaxed ${isDark ? "text-slate-300" : "text-gray-600"}`}>{project.description}</p>
-                </div>
-                <div className="flex flex-col gap-4">
-                  <div className="flex flex-wrap gap-2">
-                    {project.tech.map((tech) => (
-                      <span
-                        key={tech}
-                        className={`px-3 py-1 text-xs font-medium rounded-full border ${
-                          isDark
-                            ? "bg-slate-900/50 border-slate-800 text-slate-300"
-                            : "bg-slate-100 border-slate-200 text-slate-700"
-                        }`}
-                      >
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
-                  <div className="flex gap-3 pt-2">
-                    <a
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      href={project.github}
-                      className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg border transition-all duration-300 ${
-                        isDark 
-                          ? "bg-slate-900 border-slate-800 text-slate-300 hover:bg-slate-800" 
-                          : "bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100"
+                    {/* Right Column: Screenshot image in box margin frame */}
+                    <div
+                      className={`relative self-center overflow-hidden rounded-xl border aspect-[4/3] w-full flex items-center justify-center transition-all duration-500 group-hover:scale-[1.01] ${
+                        isDark ? "border-white/10 bg-black/40" : "border-black/10 bg-black/5"
                       }`}
                     >
-                      <Github className="w-3.5 h-3.5" />
-                      Code
-                    </a>
-                    <a
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      href={project.link}
-                      className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold rounded-lg transition-all duration-300 hover:shadow-md hover:shadow-blue-500/25"
-                    >
-                      <span className="relative flex h-2 w-2">
-                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
-                        <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-200"></span>
+                      <img
+                        src={project.image || "/placeholder.svg"}
+                        alt={`${project.title} Screenshot`}
+                        className="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-700"
+                      />
+                      {/* Technical corner badge */}
+                      <span className="absolute right-3 top-3 px-2 py-1 bg-slate-950/90 text-white text-[8px] font-mono rounded tracking-wider flex items-center gap-1 border border-white/10 select-none">
+                        <span className="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
+                        SCREENSHOT.PNG
                       </span>
-                      <ExternalLink className="w-3.5 h-3.5" />
-                      Live Link
-                    </a>
-                  </div>
+                    </div>
+
+                  </article>
                 </div>
-              </CardContent>
-            </Card>
-          ))}
+              </div>
+            )
+          })}
         </div>
       </div>
     </section>

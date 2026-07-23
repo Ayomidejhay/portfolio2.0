@@ -5,6 +5,7 @@ import { gsap } from "gsap";
 import { Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import InteractiveTerminal from "@/components/InteractiveTerminal";
 
 interface HeroSectionProps {
   isDark: boolean;
@@ -12,6 +13,26 @@ interface HeroSectionProps {
 
 export default function Hero({ isDark }: HeroSectionProps) {
   const heroRef = useRef<HTMLDivElement>(null);
+  const [musicNotes, setMusicNotes] = React.useState<{ id: number; char: string; left: number; top: number; rotation: number; scale: number }[]>([]);
+  const noteIndexRef = useRef(0);
+
+  const spawnNote = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const noteChars = ["♩", "♪", "♫", "♬", "♭", "♮", "♯", "𝄞", "𝄢"];
+    const randomChar = noteChars[Math.floor(Math.random() * noteChars.length)];
+    const id = Date.now() + noteIndexRef.current++;
+    const newNote = {
+      id,
+      char: randomChar,
+      left: Math.random() * 80 + 10,
+      top: -20,
+      rotation: Math.random() * 60 - 30,
+      scale: Math.random() * 0.4 + 0.8,
+    };
+    setMusicNotes(prev => [...prev, newNote]);
+    setTimeout(() => {
+      setMusicNotes(prev => prev.filter(n => n.id !== id));
+    }, 2000);
+  };
 
   useEffect(() => {
     let typingTimer: NodeJS.Timeout | null = null;
@@ -186,37 +207,142 @@ export default function Hero({ isDark }: HeroSectionProps) {
       ></div>
 
       <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-12 items-center relative z-10 w-full">
+        {/* Style block for self-contained saxophone notes spawn effect */}
+        <style dangerouslySetInnerHTML={{__html: `
+          @keyframes floatUpWobble {
+            0% {
+              transform: translateY(0) translateX(0) scale(0.3) rotate(0deg);
+              opacity: 0;
+            }
+            15% {
+              opacity: 1;
+              transform: translateY(-20px) translateX(10px) scale(1) rotate(15deg);
+            }
+            50% {
+              transform: translateY(-100px) translateX(-15px) scale(1.15) rotate(-15deg);
+            }
+            100% {
+              transform: translateY(-200px) translateX(10px) scale(0.7) rotate(30deg);
+              opacity: 0;
+            }
+          }
+          .music-note-animate {
+            animation: floatUpWobble 2s ease-out forwards;
+          }
+        `}} />
+
         {/* Left Side: Typography */}
-        <div className="lg:text-left text-center flex flex-col justify-center">
-          <div className="overflow-hidden mb-4 py-1">
-            <h1
-              className={`hero-name text-5xl md:text-7xl font-extrabold tracking-tight bg-gradient-to-r leading-tight ${
-                isDark
-                  ? "from-white via-blue-400 to-purple-400"
-                  : "from-black via-blue-600 to-purple-600"
-              } bg-clip-text text-transparent`}
-            >
-              AYOMIDE OLANIYAN
-            </h1>
+        <div className="hero-left-content lg:text-left text-center flex flex-col justify-center">
+          
+          {/* Directive Header */}
+          <div className="flex items-center gap-2 mb-3">
+            <span className="font-mono text-[9px] text-blue-500 dark:text-blue-400 font-semibold tracking-widest uppercase select-none">
+              [DIRECTIVE] CORE_INIT // USER_BIO
+            </span>
+            <span className="h-px bg-slate-200 dark:bg-slate-800/80 flex-1"></span>
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping"></span>
           </div>
-          <div className="overflow-hidden mb-6 py-1">
-            <h2
-              className={`hero-title text-xl md:text-3xl font-light flex items-center justify-center lg:justify-start ${
-                isDark ? "text-slate-300" : "text-gray-600"
+
+          {/* Blueprint Card Frame Wrapper */}
+          <div className={`relative border p-6 md:p-8 rounded-2xl mb-6 backdrop-blur-sm text-left ${
+            isDark 
+              ? "bg-slate-950/40 border-slate-800/60 shadow-2xl shadow-blue-950/5" 
+              : "bg-slate-50/50 border-slate-200/80 shadow-xl shadow-slate-200/20"
+          }`}>
+            {/* Blueprint grid crosses (+) in the 4 absolute corners */}
+            <span className="absolute -top-1.5 -left-1.5 font-mono text-[12px] text-blue-500 font-bold select-none">+</span>
+            <span className="absolute -top-1.5 -right-1.5 font-mono text-[12px] text-blue-500 font-bold select-none">+</span>
+            <span className="absolute -bottom-2 -left-1.5 font-mono text-[12px] text-blue-500 font-bold select-none">+</span>
+            <span className="absolute -bottom-2 -right-1.5 font-mono text-[12px] text-blue-500 font-bold select-none">+</span>
+
+            <div className="overflow-hidden mb-2">
+              <h1
+                className={`hero-name text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight bg-gradient-to-r leading-tight ${
+                  isDark
+                    ? "from-white via-blue-200 to-slate-400"
+                    : "from-slate-900 via-blue-600 to-indigo-800"
+                } bg-clip-text text-transparent`}
+              >
+                AYOMIDE OLANIYAN
+              </h1>
+            </div>
+
+            {/* Telemetry/Stats row */}
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 font-mono text-[9px] uppercase tracking-wider mb-5 opacity-65 border-b border-slate-200/10 dark:border-slate-800/40 pb-3">
+              <span>LOC: NGR.WAT (GMT+1)</span>
+              <span className="text-slate-400 dark:text-slate-700">|</span>
+              <span>ROLE: DEV.FRONTEND</span>
+              <span className="text-slate-400 dark:text-slate-700">|</span>
+              <span>SYS_STATUS: ONLINE</span>
+            </div>
+
+            <div className="overflow-hidden mb-4 py-0.5">
+              <h2
+                className={`hero-title text-xl md:text-2xl font-light flex items-center justify-start ${
+                  isDark ? "text-slate-300" : "text-gray-600"
+                }`}
+              >
+                <span className="typing-text">Frontend Developer </span>
+                <span className="animate-pulse ml-1 text-blue-500">|</span>
+              </h2>
+            </div>
+
+            <p
+              className={`hero-description text-sm md:text-base mb-6 leading-relaxed ${
+                isDark ? "text-slate-400" : "text-gray-500"
               }`}
             >
-              <span className="typing-text">Frontend Developer </span>
-              <span className="animate-pulse ml-1 text-blue-500">|</span>
-            </h2>
+              Crafting high-performance, interactive, and visually stunning web experiences with modern technologies like React, Next.js, and custom GSAP animations.
+            </p>
+
+            {/* Saxophone frequency trigger */}
+            <div className="relative inline-block text-left">
+              <button
+                onClick={spawnNote}
+                className={`interactive font-mono text-[9.5px] font-semibold border rounded-lg px-3 py-1.5 flex items-center gap-1.5 transition-all duration-200 relative select-none ${
+                  isDark
+                    ? "bg-slate-900/60 border-amber-500/30 hover:border-amber-400 text-amber-400 hover:bg-amber-950/20"
+                    : "bg-amber-50 border-amber-200 text-amber-700 hover:bg-amber-100/60"
+                }`}
+              >
+                <span>🎷</span> ACTIVATE CREATIVE FREQUENCY
+              </button>
+              
+              {/* Floating Note elements */}
+              {musicNotes.map((note) => (
+                <span
+                  key={note.id}
+                  className="absolute pointer-events-none text-lg font-bold select-none text-amber-500 dark:text-amber-400 music-note-animate"
+                  style={{
+                    left: `${note.left}%`,
+                    top: `${note.top}px`,
+                    transform: `scale(${note.scale}) rotate(${note.rotation}deg)`,
+                  }}
+                >
+                  {note.char}
+                </span>
+              ))}
+            </div>
           </div>
-          <p
-            className={`hero-description text-base md:text-lg mb-8 max-w-xl leading-relaxed ${
-              isDark ? "text-slate-400" : "text-gray-500"
-            }`}
-          >
-            Crafting high-performance, interactive, and visually stunning web experiences with modern technologies like React, Next.js, and custom GSAP animations.
-          </p>
-          <div className="hero-cta flex gap-4 justify-center lg:justify-start flex-wrap">
+
+          {/* Tech Specialization Flags */}
+          <div className="flex flex-wrap gap-2 mb-6 justify-center lg:justify-start">
+            {["[00 // NEXT.JS]", "[01 // TYPESCRIPT]", "[02 // GSAP]", "[03 // TAILWIND]"].map((flag) => (
+              <span
+                key={flag}
+                className={`font-mono text-[8px] md:text-[9px] font-bold tracking-widest px-2.5 py-1 border rounded-md select-none ${
+                  isDark
+                    ? "bg-slate-950/40 border-slate-800/80 text-slate-400 hover:text-blue-400 hover:border-blue-500/40"
+                    : "bg-slate-50 border-slate-200 text-slate-500 hover:text-blue-600 hover:border-blue-600/40"
+                } transition-colors duration-200`}
+              >
+                {flag}
+              </span>
+            ))}
+          </div>
+
+          {/* Action links */}
+          <div className="hero-cta flex gap-3.5 justify-center lg:justify-start flex-wrap">
             <Button
               size="lg"
               className={`interactive rounded-xl shadow-lg shadow-blue-500/10 ${
@@ -258,42 +384,7 @@ export default function Hero({ isDark }: HeroSectionProps) {
 
         {/* Right Side: Interactive Developer Terminal */}
         <div className="hero-right-content flex justify-center lg:justify-end opacity-0">
-          <div className={`w-full max-w-md rounded-2xl border backdrop-blur-xl shadow-2xl p-6 text-left font-mono text-xs md:text-sm leading-relaxed overflow-hidden glow-card ${
-            isDark 
-              ? "bg-slate-950/80 border-slate-800/80 shadow-blue-500/5 text-slate-300" 
-              : "bg-white/80 border-slate-200/80 shadow-slate-200/50 text-slate-700"
-          }`}>
-            <div className="flex gap-1.5 mb-5 border-b border-slate-200/20 dark:border-slate-800/60 pb-3">
-              <span className="w-3 h-3 rounded-full bg-red-500/80"></span>
-              <span className="w-3 h-3 rounded-full bg-yellow-500/80"></span>
-              <span className="w-3 h-3 rounded-full bg-green-500/80"></span>
-              <span className={`ml-2 text-xs ${isDark ? "text-slate-500" : "text-slate-400"}`}>ayomide.sh</span>
-            </div>
-            <div className="space-y-3.5">
-              <div>
-                <span className="text-purple-500">~</span> <span className="text-blue-500 font-semibold">neofetch</span>
-              </div>
-              <div className="grid grid-cols-[85px_1fr] gap-y-2.5">
-                <span className="text-blue-500 font-bold">OS:</span>
-                <span>Windows 11 x86_64</span>
-                <span className="text-blue-500 font-bold">Shell:</span>
-                <span>powershell</span>
-                <span className="text-blue-500 font-bold">Editor:</span>
-                <span>VS Code</span>
-                <span className="text-blue-500 font-bold">Stack:</span>
-                <span>React, Next.js, TypeScript</span>
-                <span className="text-blue-500 font-bold">Styling:</span>
-                <span>Tailwind CSS, Vanilla CSS</span>
-                <span className="text-blue-500 font-bold">Backend:</span>
-                <span>Supabase, Firebase, Appwrite</span>
-                <span className="text-blue-500 font-bold">Interests:</span>
-                <span>Saxophone 🎷, Football ⚽</span>
-              </div>
-              <div className={`pt-3 border-t border-slate-200/10 ${isDark ? "text-slate-500" : "text-slate-400"}`}>
-                {`// Continuous learning, clean interfaces`}
-              </div>
-            </div>
-          </div>
+          <InteractiveTerminal isDark={isDark} />
         </div>
       </div>
 
