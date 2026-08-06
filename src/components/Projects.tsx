@@ -44,17 +44,23 @@ const projects = [
     image: "/zerohunger.png",
   },
   {
-    title: "JobConnect",
-    role: "Creator & Frontend Developer",
+    title: "Football Info",
+    role: "Creator & Fullstack Developer",
     status: "LIVE",
-    category: "JOB SEARCH INTERFACE",
-    description: "A job-sharing platform where registered users can post job opportunities visible to all other users.",
-    tech: ["Next.js", "Appwrite", "TypeScript", "Tailwind"],
+    category: "SPORTS API & FAN PREDICTOR",
+    description: "A dynamic, real-time football dashboard with fixture analytics, live/finished status filtering, Head-to-Head insights, standings, and a custom fan predictor module.",
+    tech: ["Next.js", "TypeScript", "Tailwind CSS", "Football API", "React"],
     team: "Solo Project",
-    features: ["Authenticated user access and role handling", "Users can edit or delete their own job posts", "All users can browse and filter available jobs"],
-    link: "https://jobconnnect.netlify.app/",
-    github: "https://github.com/Ayomidejhay/jobconnect",
-    image: "/jobconnect.png",
+    features: [
+      "Real-time scores with status-based matchday/live/finished filtering",
+      "In-depth match details including team statistics and Head-to-Head analytics",
+      "Interactive Fan Predictor Hub enabling community score prediction updates",
+      "Dynamic league standings table and latest global football news feed",
+      "Fully responsive, dark-mode optimized layout for desktop and mobile devices"
+    ],
+    link: "https://foottball.netlify.app/",
+    github: "https://github.com/Ayomidejhay/football",
+    image: "/football.png",
   },
 
   {
@@ -244,7 +250,7 @@ export default function Projects({isDark}: ProjectsSectionProps) {
 
                       {/* Action buttons */}
                       <div className="flex flex-wrap gap-3 pt-4">
-                        <a
+                        {/* <a
                           target="_blank"
                           rel="noopener noreferrer"
                           href={project.github}
@@ -256,7 +262,7 @@ export default function Projects({isDark}: ProjectsSectionProps) {
                         >
                           <Github className="w-3.5 h-3.5" />
                           CODE ↗
-                        </a>
+                        </a> */}
                         <a
                           target="_blank"
                           rel="noopener noreferrer"

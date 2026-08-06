@@ -23,9 +23,9 @@ const experiences: ExperienceItem[] = [
   {
     title: "Frontend Developer (Contract)",
     company: "Rehobot Business Solution Ltd",
-    period: "NOV 2025 - PRESENT",
+    period: "NOV 2025 - JUN 2026",
     statusCode: "LOG_EXP_00",
-    statusText: "ACTIVE",
+    statusText: "COMPLETED",
     details: [
       "Building responsive, conversion-focused web apps using Next.js & Tailwind CSS.",
       "Developing an internal admin dashboard with role-based accessibility control.",
