@@ -133,10 +133,10 @@ export default function InteractiveTerminal({ isDark }: InteractiveTerminalProps
     } else if (cmd === "projects") {
       const lines: TerminalLine[] = [
         { text: "SYSTEM_BUILD_LOG:", type: "system" },
-        { text: "  1. ZeroHunger App - Food donation & real-time pickup mapping (Next.js + Supabase)", type: "output" },
-        { text: "  2. JobConnect - Job post board & listings aggregator (Next.js + Appwrite)", type: "output" },
-        { text: "  3. Admin Dashboard - System telemetry visualizer (Next.js + Chart.js)", type: "output" },
-        { text: "  4. Degen Cyberlab - Ultra-modern dark tech landing layout (Next.js + Framer Motion)", type: "output" },
+        { text: "  1. Invoxa - Multi-tenant SaaS billing, proposals, & stock tracking (Next.js + Supabase + Gemini)", type: "output" },
+        { text: "  2. ZeroHunger App - Food donation & real-time pickup mapping (Next.js + Supabase)", type: "output" },
+        { text: "  3. JobConnect - Job post board & listings aggregator (Next.js + Appwrite)", type: "output" },
+        { text: "  4. Runnars - Premium pet wellness platform landing layout (Next.js + Framer Motion + Lenis)", type: "output" },
         { text: "  Use 'sudo hire-me' to contact me and collaborate on one of these!", type: "system" }
       ];
       printLines(lines);

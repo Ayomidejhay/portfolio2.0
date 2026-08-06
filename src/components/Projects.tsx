@@ -12,6 +12,25 @@ interface ProjectsSectionProps {
 
 const projects = [
   {
+    title: "Invoxa",
+    role: "Creator & Fullstack Developer",
+    status: "LIVE",
+    category: "ENTERPRISE SAAS & INVOICING",
+    description: "An enterprise-grade multi-tenant SaaS billing, proposal, and inventory tracker with serverless PDF generation, multimodal AI receipt scanning, and interactive business analytics.",
+    tech: ["Next.js", "Supabase", "TypeScript", "Puppeteer", "Google Gemini"],
+    team: "Solo Project",
+    features: [
+      "Polymorphic multi-option proposal acceptance pipeline",
+      "Headless serverless Puppeteer PDF generation engine",
+      "Multimodal Gemini AI receipt parsing & inventory auto-mapping",
+      "Interactive AI Business Analyst chat with dynamic chart visualizations",
+      "Transaction safety secured via database-level PostgreSQL RPCs"
+    ],
+    link: "https://invooxa.netlify.app",
+    github: "https://github.com/Ayomidejhay/Invoxa",
+    image: "/invoxa.png",
+  },
+  {
     title: "ZeroHunger App",
     role: "Creator & Fullstack Developer",
     status: "LIVE",
@@ -37,31 +56,24 @@ const projects = [
     github: "https://github.com/Ayomidejhay/jobconnect",
     image: "/jobconnect.png",
   },
+
   {
-    title: "Admin Dashboard",
+    title: "Runnars",
     role: "Frontend Developer",
-    status: "PROTOTYPE",
-    category: "TELEMTRY SYSTEM TELEPORT",
-    description: "An intuitive admin interface for managing platform users, listings, and overall system health.",
-    tech: ["Chart.js", "Next.js", "Framer Motion", "CSS", "TypeScript"],
-    team: "Solo Project",
-    features: ["Analytics dashboard", "Dark Mode", "Responsive Design"],
-    link: "https://dashboardtestin.netlify.app/",
-    github: "https://github.com/Ayomidejhay/dashboard-demo",
-    image: "/dashboard.png",
-  },
-  {
-    title: "Degen Cyberlab",
-    role: "Creative Coder",
     status: "LIVE",
-    category: "CONVERSION LANDING PAGE",
-    description: "A modern, conversion-optimized landing page for a fictional software lab/startup.",
-    tech: ["Next.js", "Framer Motion", "Tailwind", "TypeScript"],
+    category: "PET WELLNESS PLATFORM",
+    description: "An ultra-smooth, high-performance landing page for Runnars, a pet wellness and habit-building platform. Built with Next.js, Framer Motion, and Lenis smooth scrolling.",
+    tech: ["Next.js", "Framer Motion", "Lenis", "Swiper", "Tailwind", "TypeScript"],
     team: "Solo Project",
-    features: ["Fully responsive hero, services, and testimonial sections", "Animations with Framer Motion for engaging transitions", "Clean, modern branding using Tailwind and custom components"],
-    link: "https://cyberr-lab.netlify.app/",
-    github: "https://github.com/Ayomidejhay/cyberr-lab",
-    image: "/degen.png",
+    features: [
+      "Integrated GSAP & Lenis for ultra-smooth scrolling kinetics",
+      "Engaging interactive cards & transitions powered by Framer Motion",
+      "Optimized mobile swiper/carousel layouts for seamless touch navigation",
+      "Complete responsive design with lazy-loaded wellness components"
+    ],
+    link: "https://runnars.com",
+    github: "https://github.com/Ayomidejhay/runna",
+    image: "/runnars.png",
   },
 ]
 
