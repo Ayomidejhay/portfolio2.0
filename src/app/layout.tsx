@@ -10,7 +10,7 @@ export const metadata: Metadata = {
     title: "Ayomide Olaniyan | Frontend Developer & Creative Coder",
     description: "Portfolio of Ayomide Olaniyan, a Frontend Developer specialized in React, Next.js, GSAP, and Tailwind CSS. Crafting interactive and high-performance web applications.",
     type: "website",
-    url: "https://github.com/Ayomidejhay",
+    url: "https://ayomideolaniyan.netlify.app",
   },
 };
 
